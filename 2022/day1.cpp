@@ -19,12 +19,12 @@ int main() {
 
     } catch (const std::invalid_argument& e) {
       if (calories >= max) {
-        std::cout << std::to_string(calories) << "\n";
+        std::cout << std::to_string(max) << "\n";
         max = calories;
       }
       calories = 0;
     }
   }
-  std::cout << std::to_string(calories);
+  std::cout << std::to_string(max);
   return 0;
 }
