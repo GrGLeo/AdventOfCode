@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <string>
 
 int main() {
@@ -18,28 +19,26 @@ int main() {
     bool found = false;
     std::string packOne = line.substr(0, split);
     std::string packTwo = line.substr(split);
+    std::map<char, int> packMap;
 
     for (int i = 0; i < split; i++) {
-      char left = packOne[i];
-      for (int j = 0; j < split; j++) {
-        char right = packTwo[j];
-        if (left == right) {
-          found = true;
-          int value = static_cast<int>(left);
-          if (value >= 97) {
-            value -= 96;
-          } else {
-            value -= 38;
-          }
-          count += value;
-        }
-        if (found) {
-          break;
-        }
+      char item = packOne[i];
+      int value = static_cast<int>(item);
+      if (value >= 97) {
+        value -= 96;
+      } else {
+        value -= 38;
       }
-      if (found) {
+      packMap[item] = value;
+    }
+
+    for (int i = 0; i < split; i++) {
+      char item = packTwo[i];
+      if (packMap.find(item) != packMap.end()) {
+        count += packMap[item];
+        found = true;
         break;
-      }
+      } 
     }
   }
   std::cout << count;
