@@ -2,6 +2,8 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <unordered_set>
+#include <vector>
 
 int main() {
   std::ifstream inputFile("day3.txt");
@@ -13,32 +15,34 @@ int main() {
   std::string line{};
   char same{};
   int count{};
+  int idx = 0;
+  std::vector<std::string> group;
+  std::map<char, int> mapOne;
+  std::map<char, int> mapTwo;
   while (std::getline(inputFile, line)) {
-    int len = line.length();
-    int split = len / 2;
-    bool found = false;
-    std::string packOne = line.substr(0, split);
-    std::string packTwo = line.substr(split);
-    std::map<char, int> packMap;
+    group.push_back(line);
+    idx++;
 
-    for (int i = 0; i < split; i++) {
-      char item = packOne[i];
-      int value = static_cast<int>(item);
-      if (value >= 97) {
-        value -= 96;
-      } else {
-        value -= 38;
+    if (idx == 3) {
+      std::unordered_set<char> oneSet(group[0].begin(), group[0].end());
+      std::unordered_set<char> twoSet(group[1].begin(), group[1].end());
+
+      for (int i = 0; i < group[2].length(); i++) {
+        char item = group[2][i];
+        if (oneSet.find(item) != oneSet.end() &&
+            twoSet.find(item) != twoSet.end()) {
+          int value = static_cast<int>(item);
+          if (value >= 97) {
+            value -= 96;
+          } else {
+            value -= 38;
+          }
+          count += value;
+          break;
+        }
       }
-      packMap[item] = value;
-    }
-
-    for (int i = 0; i < split; i++) {
-      char item = packTwo[i];
-      if (packMap.find(item) != packMap.end()) {
-        count += packMap[item];
-        found = true;
-        break;
-      } 
+      idx = 0;
+      group.clear();
     }
   }
   std::cout << count;
