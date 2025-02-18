@@ -81,19 +81,13 @@ int main() {
     return 1;
   }
 
-  int lineNumber{};
   std::string line{};
   while (std::getline(inputFile, line)) {
-    lineNumber++;
-    std::cout << "Number: " << lineNumber << std::endl;
     std::vector results = split(line, ' ');
     int numberMvt = std::stoi(results[1]);
     char from = results[3][0];
     char to = results[5][0];
-    std::cout << "mvt: " << numberMvt << " from: " << from << " to: " << to
-              << std::endl;
     for (int i = 0; i < numberMvt; i++) {
-      std::cout << stackMap[from].length() << std::endl;
       char out = stackMap[from].pop();
       stackMap[to].push(out);
     }
